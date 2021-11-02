@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import time
+
 from warnings import filterwarnings
 filterwarnings(action='ignore', module='.*OpenSSL.*')
 filterwarnings('ignore', category=RuntimeWarning, module='runpy')
@@ -253,8 +255,14 @@ def main_logic():
 
         if len(temp_honeypots) > 0:
             print('[x] Everything looks good!')
-            if not ARGV.test:
-                input('')
+
+            # Dirty hack to daemonize this script
+            try:
+                while True:
+                    time.sleep(1000000)
+            finally:
+                print('Exiting...')
+
             for server in temp_honeypots:
                 try:
                     if not ARGV.test:
